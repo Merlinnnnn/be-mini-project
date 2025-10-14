@@ -63,3 +63,95 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const weightTab = document.getElementById("weight");
+  const input = weightTab.querySelector('input');
+  const selects = weightTab.querySelectorAll('select');
+  const button = weightTab.querySelector('button');
+
+  const result = document.createElement('p');
+  result.style.marginTop = "15px";
+  result.style.fontWeight = "bold";
+  result.style.color = "#5e17eb";
+  weightTab.appendChild(result);
+
+
+  button.addEventListener('click', async () => {
+    const value = input.value.trim();
+    const unitFrom = selects[0].value;
+    const unitTo = selects[1].value;
+    if (!value) {
+      result.textContent = "Bạn cần nhập giá trị quy đổi";
+      result.style.color = 'red';
+    }
+    try {
+      // Gọi API GET
+      const response = await fetch(
+        `http://localhost:5000/api/convert/weight?value=${value}&from=${unitFrom}&to=${unitTo}`
+      );
+      console.log(response);
+      // Kiểm tra lỗi từ server
+      if (!response.ok) {
+        const err = await response.json();
+        result.textContent = `❌ Lỗi: ${err.error}`;
+        result.style.color = "red";
+        return;
+      }
+
+      // Nhận kết quả
+      const data = await response.json();
+      result.textContent = `✅ ${value} ${from} = ${data.value} ${to}`;
+      result.style.color = "#5e17eb";
+    } catch (error) {
+      console.error(error);
+      result.textContent = "❌ Không thể kết nối đến server!";
+      result.style.color = "red";
+    }
+
+  })
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const temp = document.getElementById("temperature");
+  const input = temp.querySelector('input');
+  const selects = temp.querySelectorAll('select');
+  const button = temp.querySelector('button');
+
+  const result = document.createElement('p');
+  result.style.marginTop = "15px";
+  result.style.fontWeight = "bold";
+  result.style.color = "#5e17eb";
+  weightTab.appendChild(result);
+  button.addEventListener('click', async () => {
+    const value = input.value.trim();
+    const from = selects[0].value;
+    const to = selects[1].value;
+
+    try {
+      // Gọi API GET
+      const response = await fetch(
+        `http://localhost:5000/api/convert/temperature?value=${value}&from=${from}&to=${to}`
+      );
+      console.log(response);
+
+      // Kiểm tra lỗi từ server
+      if (!response.ok) {
+        const err = await response.json();
+        result.textContent = `❌ Lỗi: ${err.error}`;
+        result.style.color = "red";
+        return;
+      }
+
+      // Nhận kết quả
+      const data = await response.json();
+      result.textContent = `✅ ${value} ${from} = ${data.value} ${to}`;
+      result.style.color = "#5e17eb";
+    } catch (error) {
+      console.error(error);
+      result.textContent = "❌ Không thể kết nối đến server!";
+      result.style.color = "red";
+    }
+  })
+
+})
