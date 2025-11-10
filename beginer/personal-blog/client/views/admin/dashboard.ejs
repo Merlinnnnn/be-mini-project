@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Personal Blog</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="border-box">
+            <div class="admin-header">
+                <h1 class="main-title">Personal Blog</h1>
+                <a href="/admin/new" class="add-link">+ Add</a>
+            </div>
+            
+            <ul class="article-list">
+                <% if (articles.length === 0) { %>
+                    <li class="article-item">
+                        <p>No articles published yet. <a href="/admin/new">Create your first article</a></p>
+                    </li>
+                <% } else { %>
+                    <% articles.forEach(article => { %>
+                        <li class="admin-article-item">
+                            <a href="/article/<%= article.id %>" class="article-title-link">
+                                <%= article.title %>
+                            </a>
+                            <div class="article-actions">
+                                <a href="/admin/edit/<%= article.id %>" class="action-link">Edit</a>
+                                <a href="/admin/delete/<%= article.id %>" class="action-link delete-link" onclick="return confirm('Are you sure you want to delete this article?')">Delete</a>
+                            </div>
+                        </li>
+                    <% }); %>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
